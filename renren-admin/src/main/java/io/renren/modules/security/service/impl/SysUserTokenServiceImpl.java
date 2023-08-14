@@ -15,10 +15,15 @@ import io.renren.common.utils.Result;
 import io.renren.modules.security.dao.SysUserTokenDao;
 import io.renren.modules.security.entity.SysUserTokenEntity;
 import io.renren.modules.security.service.SysUserTokenService;
+import io.renren.modules.sys.service.SysRoleService;
+import io.renren.modules.sys.service.SysRoleUserService;
+import io.renren.modules.sys.service.SysUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -28,6 +33,13 @@ public class SysUserTokenServiceImpl extends BaseServiceImpl<SysUserTokenDao, Sy
 	 */
 	private final static int EXPIRE = 3600 * 12;
 
+	//用于获取useId对应的roleId
+	@Autowired
+	private SysRoleUserService sysRoleUserService;
+	@Autowired
+	private SysRoleService sysRoleService;
+    @Autowired
+	private SysUserService sysUserService;
 	@Override
 	public Result createToken(Long userId) {
 		//用户token
@@ -72,6 +84,19 @@ public class SysUserTokenServiceImpl extends BaseServiceImpl<SysUserTokenDao, Sy
 		Map<String, Object> map = new HashMap<>(2);
 		map.put(Constant.TOKEN_HEADER, token);
 		map.put("expire", EXPIRE);
+		//加入real_name
+		String name = sysUserService.get(userId).getRealName();
+		map.put("name", name);
+		//加入roleId
+		Map<String, Object> params = new HashMap<>(1);
+		params.put("user_id",userId);
+		List<Long> roleIdList= sysRoleUserService.getRoleIdList(userId);
+		if (!roleIdList.isEmpty()) {
+			Long roleId = roleIdList.get(0);
+			String roleName = sysRoleService.get(roleId).getName();
+			map.put("role",roleName);
+		}
+
 		return new Result().ok(map);
 	}
 

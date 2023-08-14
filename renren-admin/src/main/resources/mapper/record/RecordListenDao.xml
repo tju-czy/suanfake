@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.record.dao.RecordListenDao">
+
+    <resultMap type="io.renren.modules.record.entity.RecordListenEntity" id="recordListenMap">
+        <result property="id" column="id"/>
+        <result property="studentId" column="student_id"/>
+        <result property="sessionTime" column="session_time"/>
+        <result property="uploadTime" column="upload_time"/>
+        <result property="details" column="details"/>
+        <result property="likes" column="likes"/>
+        <result property="type" column="type"/>
+    </resultMap>
+
+
+</mapper>

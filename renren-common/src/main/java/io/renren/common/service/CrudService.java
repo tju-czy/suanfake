@@ -10,6 +10,7 @@ package io.renren.common.service;
 
 import io.renren.common.page.PageData;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,8 @@ public interface CrudService<T, D> extends BaseService<T> {
     D get(Long id);
 
     void save(D dto);
+
+    void saveBatch(Collection<D> dtoList, int batchSize);
 
     void update(D dto);
 

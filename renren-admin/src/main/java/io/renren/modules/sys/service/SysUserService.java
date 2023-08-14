@@ -38,6 +38,8 @@ public interface SysUserService extends BaseService<SysUserEntity> {
 
 	void delete(Long[] ids);
 
+	void deleteByName(String[] names);
+
 	/**
 	 * 修改密码
 	 * @param id           用户ID

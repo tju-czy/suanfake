@@ -87,6 +87,16 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleDao, SysRoleEntit
 	}
 
 	@Override
+	public Long getIdByName(String name){
+		QueryWrapper<SysRoleEntity> wrapper = new QueryWrapper<>();
+
+		wrapper.eq("name",name);
+		List<SysRoleEntity> entityList = baseDao.selectList(wrapper);
+
+		return ConvertUtils.sourceToTarget(entityList, SysRoleDTO.class).get(0).getId();
+	}
+
+	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void save(SysRoleDTO dto) {
 		SysRoleEntity entity = ConvertUtils.sourceToTarget(dto, SysRoleEntity.class);

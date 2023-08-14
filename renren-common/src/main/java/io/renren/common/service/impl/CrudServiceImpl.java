@@ -18,6 +18,7 @@ import io.renren.common.utils.ConvertUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -62,9 +63,21 @@ public abstract class CrudServiceImpl<M extends BaseMapper<T>, T, D> extends Bas
     public void save(D dto) {
         T entity = ConvertUtils.sourceToTarget(dto, currentModelClass());
         insert(entity);
-
+        //dto 是接收到到的数据
         //copy主键值到dto
         BeanUtils.copyProperties(entity, dto);
+    }
+
+    @Override
+    public void saveBatch(Collection<D> dtoList, int batchSize){
+//        List<T> entities = ConvertUtils.sourceToTarget(dtoList, currentModelClass());
+//        for (T entity: entities) {
+//            insert(entity);
+//            dtoList.
+//        }
+        for (D dto: dtoList) {
+            save(dto);
+        }
     }
 
     @Override
@@ -75,6 +88,7 @@ public abstract class CrudServiceImpl<M extends BaseMapper<T>, T, D> extends Bas
 
     @Override
     public void delete(Long[] ids) {
+
         baseDao.deleteBatchIds(Arrays.asList(ids));
     }
 }

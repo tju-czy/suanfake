@@ -129,12 +129,23 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUserEntit
 	}
 
 	@Override
-	public void delete(Long[] ids) {
+	public void delete(Long[] ids) { //未改动
 		//删除用户
 		baseDao.deleteBatchIds(Arrays.asList(ids));
 
 		//删除角色用户关系
 		sysRoleUserService.deleteByUserIds(ids);
+	}
+
+	@Override
+	public void deleteByName(String[] names){ // 调用本类的函数getByUsername和delete
+		//用户名对应的user id
+		Long[] ids = new Long[names.length];
+		for (int i=0;i<names.length;i++) {
+			ids[i] = (this.getByUsername(names[i])).getId();
+			System.out.println("deleteByName: ids"+ids[i]);
+		}
+		this.delete(ids);
 	}
 
 	@Override

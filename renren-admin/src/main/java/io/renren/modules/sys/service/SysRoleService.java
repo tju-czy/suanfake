@@ -31,6 +31,8 @@ public interface SysRoleService extends BaseService<SysRoleEntity> {
 
 	SysRoleDTO get(Long id);
 
+	Long getIdByName(String name);
+
 	void save(SysRoleDTO dto);
 
 	void update(SysRoleDTO dto);

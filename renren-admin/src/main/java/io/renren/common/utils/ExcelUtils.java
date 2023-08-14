@@ -9,14 +9,18 @@
 package io.renren.common.utils;
 
 import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
+import cn.afterturn.easypoi.excel.entity.ImportParams;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Import;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,6 +33,33 @@ import java.util.List;
  * @author Mark sunlightcs@gmail.com
  */
 public class ExcelUtils {
+    /**
+     * Excel导入
+     *
+     * @param inputStream   文件名
+     * @param pojoClass     对象Class
+     */
+    public static List<?> importExcel(InputStream inputStream,
+                                            Class<?> pojoClass) throws Exception {
+        ImportParams params = new ImportParams();
+        // 有表头但没有标题
+        params.setTitleRows(0);
+        // 表头只有一行
+        params.setHeadRows(1);
+        List list = ExcelImportUtil.importExcel(inputStream,pojoClass,params); // 问题所在
+        System.out.println(list.get(0).getClass());
+        System.out.println(list.get(0).toString());
+        System.out.println("ExcelUtils "+list.size());
+        //更改类型
+//        List targetList = new ArrayList<>(list.size());
+//        for(Object source: list){
+//            Object target = pojoClass.newInstance();
+//            BeanUtils.copyProperties(source, target);
+//            targetList.add(target);
+//        }
+
+        return list;
+    }
 
     /**
      * Excel导出
@@ -74,4 +105,7 @@ public class ExcelUtils {
 
         exportExcel(response, fileName, targetList, targetClass);
     }
+
+
+
 }

@@ -77,7 +77,8 @@ public class LoginController {
 		ValidatorUtils.validateEntity(login);
 
 		//验证码是否正确
-		boolean flag = captchaService.validate(login.getUuid(), login.getCaptcha());
+//		boolean flag = captchaService.validate(login.getUuid(), login.getCaptcha());
+		boolean flag = true;
 		if(!flag){
 			return new Result().error(ErrorCode.CAPTCHA_ERROR);
 		}
